@@ -6,12 +6,15 @@ package mem_pkg;
 		     ADDR_WIDTH = 32,
 		     LENGTH = 1024,
 		     BYTE_ORDER="MSB",
+		     VERBOSITY="LOG",
 		     FAIL_ON_MISMATCH = 0,
 		     PACK_KEEP = 1
 		     );
 
       local logic [7:0] buffer[LENGTH-1:0]        = '{default: 8'b0};
       local logic [7:0] expect_buffer[LENGTH-1:0] = '{default: 8'b0};
+
+      // local logger
 
       longint write_address        = 0;
       longint write_expect_address = 0;
@@ -70,6 +73,14 @@ package mem_pkg;
       /***********************************************************************
        * Burst write expectation functions
        ***********************************************************************/
+      function void burst_write_expect_addr(input longint addr);
+	 write_expect_address = addr;
+      endfunction // burst_write_addr
+
+      function void burst_read_expect_addr(input longint addr);
+	 read_expect_address = addr;
+      endfunction // burst_read_addr
+
       function void burst_write_expect_byte(input logic [7:0] data);
 	 expect_buffer[write_expect_address++] = data[ 7: 0];
       endfunction // burst_write_expect_byte
